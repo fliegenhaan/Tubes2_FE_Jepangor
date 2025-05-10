@@ -29,7 +29,7 @@ export default function RecipeTree({ recipes, targetElement }: RecipeTreeProps) 
   
   useEffect(() => {
     if (containerRef) {
-      const { width, height } = containerRef.getBoundingClientRect();
+      const { width } = containerRef.getBoundingClientRect();
       setTranslate({ x: width / 2, y: 50 });
     }
   }, [containerRef]);

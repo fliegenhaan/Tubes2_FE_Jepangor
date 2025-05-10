@@ -19,7 +19,7 @@ export default function ResultInfo({ result }: ResultInfoProps) {
   return (
     <div className="bg-white p-4 rounded-lg shadow-md">
       <h2 className="text-lg font-semibold text-gray-800 mb-2">
-        Hasil Pencarian untuk "{result.targetElement}"
+        Hasil Pencarian untuk &quot;{result.targetElement}&quot;
       </h2>
       
       <div className="grid grid-cols-2 gap-4 mb-4">
