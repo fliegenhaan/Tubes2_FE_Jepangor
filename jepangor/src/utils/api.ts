@@ -1,24 +1,31 @@
+// utils/api.ts
 import { ElementListResponse, SearchParams, SearchResult } from "../types";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080/api";
 
 export async function getAllElements(): Promise<string[]> {
   try {
-    const response = await fetch(`${API_BASE_URL}/elements`);
+    const response = await fetch(`${API_BASE_URL}/elements`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
     
     if (!response.ok) {
-      throw new Error(`Error: ${response.status}`);
+      const errorText = await response.text();
+      throw new Error(`Error ${response.status}: ${errorText}`);
     }
     
     const data: ElementListResponse = await response.json();
-    return data.elements.sort(); // Mengurutkan elemen secara alfabetis
+    return data.elements.sort(); 
   } catch (error) {
     console.error("Failed to fetch elements:", error);
-    return [];
+    throw error;
   }
 }
 
-export async function findRecipes(params: SearchParams): Promise<SearchResult | null> {
+export async function findRecipes(params: SearchParams): Promise<SearchResult> {
   try {
     const response = await fetch(`${API_BASE_URL}/find-recipes`, {
       method: "POST",
@@ -29,12 +36,13 @@ export async function findRecipes(params: SearchParams): Promise<SearchResult | 
     });
     
     if (!response.ok) {
-      throw new Error(`Error: ${response.status}`);
+      const errorText = await response.text();
+      throw new Error(`Error ${response.status}: ${errorText}`);
     }
     
     return await response.json();
   } catch (error) {
     console.error("Failed to find recipes:", error);
-    return null;
+    throw error;
   }
 }

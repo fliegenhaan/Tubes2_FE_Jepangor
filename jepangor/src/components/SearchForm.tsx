@@ -1,8 +1,9 @@
 "use client"
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { SearchParams } from "../types";
 import AlgorithmSelector from "./AlgorithmSelector";
 import ElementSelector from "./ElementSelector";
+import { FaSearch, FaPlusCircle, FaMinusCircle } from "react-icons/fa";
 
 interface SearchFormProps {
   onSearch: (params: SearchParams) => void;
@@ -14,11 +15,6 @@ export default function SearchForm({ onSearch, isLoading }: SearchFormProps) {
   const [algorithm, setAlgorithm] = useState<"bfs" | "dfs" | "bidirectional">("bfs");
   const [findShortest, setFindShortest] = useState<boolean>(true);
   const [maxRecipes, setMaxRecipes] = useState<number>(5);
-  
-  useEffect(() => {
-    if (maxRecipes < 1) setMaxRecipes(1);
-    if (maxRecipes > 20) setMaxRecipes(20);
-  }, [maxRecipes]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -37,8 +33,10 @@ export default function SearchForm({ onSearch, isLoading }: SearchFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-md">
-      <div className="space-y-4">
+    <form onSubmit={handleSubmit} className="card p-6 slide-up">
+      <div className="space-y-6">
+        <h3 className="text-xl font-bold text-[var(--primary)] mb-4">Cari Recipe</h3>
+        
         <ElementSelector
           onSelect={setTargetElement}
           selectedElement={targetElement}
@@ -50,33 +48,52 @@ export default function SearchForm({ onSearch, isLoading }: SearchFormProps) {
         />
         
         <div className="w-full">
-          <label className="flex items-center space-x-2 text-sm font-medium text-gray-700">
+          <label className="flex items-center space-x-2 text-sm font-medium text-gray-700 cursor-pointer">
             <input
               type="checkbox"
               checked={findShortest}
               onChange={(e) => setFindShortest(e.target.checked)}
-              className="h-4 w-4 text-blue-600 rounded focus:ring-blue-500"
+              className="h-4 w-4 rounded text-[var(--primary)] focus:ring-[var(--primary)]"
             />
             <span>Cari recipe terpendek</span>
           </label>
+          
+          <p className="mt-1 text-xs text-gray-500">
+            {findShortest 
+              ? "Hanya akan menampilkan 1 recipe dengan jalur terpendek" 
+              : "Akan menampilkan beberapa recipe berbeda"}
+          </p>
         </div>
         
         {!findShortest && (
           <div className="w-full">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
               Jumlah recipe maksimal
             </label>
-            <input
-              type="number"
-              min="1"
-              max="20"
-              value={maxRecipes}
-              onChange={(e) => setMaxRecipes(parseInt(e.target.value) || 1)}
-              className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-            <p className="text-xs text-gray-500 mt-1">
-              *Menampilkan maksimal {maxRecipes} recipe yang tersedia
-            </p>
+            <div className="flex items-center">
+              <button 
+                type="button"
+                onClick={() => setMaxRecipes(prev => Math.max(1, prev - 1))}
+                className="p-2 bg-gray-100 rounded-l-lg text-gray-600 hover:bg-gray-200 transition-colors"
+              >
+                <FaMinusCircle />
+              </button>
+              <input
+                type="number"
+                min="1"
+                max="20"
+                value={maxRecipes}
+                onChange={(e) => setMaxRecipes(parseInt(e.target.value) || 1)}
+                className="w-16 py-2 text-center border-y border-gray-300 focus:outline-none"
+              />
+              <button 
+                type="button"
+                onClick={() => setMaxRecipes(prev => Math.min(20, prev + 1))}
+                className="p-2 bg-gray-100 rounded-r-lg text-gray-600 hover:bg-gray-200 transition-colors"
+              >
+                <FaPlusCircle />
+              </button>
+            </div>
           </div>
         )}
         
@@ -84,13 +101,25 @@ export default function SearchForm({ onSearch, isLoading }: SearchFormProps) {
           <button
             type="submit"
             disabled={isLoading || !targetElement}
-            className={`w-full py-2 px-4 rounded-md text-white font-medium ${
+            className={`w-full py-3 px-4 rounded-lg text-white font-medium flex items-center justify-center transition-all duration-200 ${
               isLoading || !targetElement
                 ? "bg-gray-400 cursor-not-allowed"
-                : "bg-blue-600 hover:bg-blue-700"
+                : "bg-[var(--primary)] hover:bg-[var(--primary-light)]"
             }`}
           >
-            {isLoading ? "Mencari..." : "Cari Recipe"}
+            {isLoading ? (
+              <>
+                <div className="animate-spin mr-2 h-5 w-5 border-2 border-white border-t-transparent rounded-full"></div>
+                <span>Mencari...</span>
+              </>
+            ) : (
+              <>
+                <span className="mr-2">
+                  < FaSearch />
+                </span>
+                <span>Cari Recipe</span>
+              </>
+            )}
           </button>
         </div>
       </div>

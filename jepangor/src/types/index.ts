@@ -1,5 +1,12 @@
+// types/index.ts
 export interface Recipe {
-  Ingredients: string[];
+  ingredients: string[];
+}
+
+export interface ElementData {
+  name: string;
+  recipe: string;
+  tier: number;
 }
 
 export interface SearchParams {
@@ -24,4 +31,9 @@ export interface TreeNode {
   id: string;
   name: string;
   children: TreeNode[];
+  tier?: number;
+  attributes?: {
+    type?: string;
+    [key: string]: any;
+  };
 }
