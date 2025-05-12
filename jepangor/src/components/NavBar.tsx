@@ -36,7 +36,9 @@ export default function NavBar() {
               <div className="absolute inset-2 bg-[var(--secondary)] rounded-sm transform rotate-0"></div>
             </div>
           </div>
-          <span className="font-bold text-xl text-white">Jepangor</span>
+          <span className={`font-bold text-xl transition-colors duration-300 ${scrolled ? 'text-[var(--primary)]' : 'text-white'}`}>
+            Jepangor
+          </span>
         </div>
         
         <div className="flex space-x-1">
