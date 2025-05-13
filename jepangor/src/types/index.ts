@@ -1,9 +1,22 @@
-// types/index.ts
-export interface Recipe {
-  ingredients: string[];
+export interface RecipeNode {
+  id: string;
+  label: string;
+  level: number;
 }
 
-export interface ElementData {
+export interface RecipeLink {
+  source: string;
+  target: string;
+}
+
+export interface Recipe {
+  id: number;
+  ID?: number;
+  nodes: RecipeNode[];
+  links: RecipeLink[];
+}
+
+export interface Element {
   name: string;
   recipe: string;
   tier: number;
@@ -17,10 +30,13 @@ export interface SearchParams {
 }
 
 export interface SearchResult {
-  targetElement: string;
-  recipes: Recipe[];
+  target: string;
+  targetElement?: string;
+  algorithm: string;
+  time: number;
   visitedNodes: number;
-  timeElapsed: number;
+  recipes: Recipe[];
+  treeData?: TreeNode;
 }
 
 export interface ElementListResponse {
@@ -30,10 +46,6 @@ export interface ElementListResponse {
 export interface TreeNode {
   id: string;
   name: string;
-  children: TreeNode[];
-  tier?: number;
-  attributes?: {
-    type?: string;
-    [key: string]: any;
-  };
+  combine?: TreeNode[];
+  children?: TreeNode[];
 }

@@ -16,7 +16,7 @@ export default function ResultInfo({ result }: ResultInfoProps) {
         <span className="mr-2">
           < FaInfoCircle />
         </span>
-        Hasil Pencarian untuk "{result.targetElement}"
+        Hasil Pencarian untuk "{result.target}"
       </h3>
       
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -34,7 +34,7 @@ export default function ResultInfo({ result }: ResultInfoProps) {
         <InfoCard 
           icon={<span className="text-[var(--secondary)]"><FaStopwatch /></span>}
           label="Waktu Pencarian"
-          value={`${result.timeElapsed.toFixed(6)} detik`}
+          value={`${result.time.toFixed(6)} detik`}
         />
       </div>
       
@@ -46,14 +46,16 @@ export default function ResultInfo({ result }: ResultInfoProps) {
           >
             <p className="text-sm text-gray-500 mb-1">Recipe {index + 1}</p>
             <div className="flex flex-wrap gap-2">
-              {recipe.ingredients.map((ingredient, i) => (
-                <div 
-                  key={i}
-                  className="px-3 py-1 bg-white rounded-full border border-gray-200 text-sm font-medium"
-                >
-                  {ingredient}
-                </div>
-              ))}
+              {recipe.nodes
+                .filter(node => node.level === 1)
+                .map((node, i) => (
+                  <div 
+                    key={i}
+                    className="px-3 py-1 bg-white rounded-full border border-gray-200 text-sm font-medium"
+                  >
+                    {node.label}
+                  </div>
+                ))}
             </div>
           </div>
         ))}
