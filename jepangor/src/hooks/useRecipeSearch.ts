@@ -12,11 +12,13 @@ export default function useRecipeSearch() {
     setError(null);
     
     try {
+      const actualMaxRecipes = params.maxRecipes === 1 ? 2 : params.maxRecipes;
+      
       const apiParams = {
         targetElement: params.targetElement,
         algorithm: params.algorithm,
         multipleRecipe: !params.findShortest,
-        maxRecipes: params.maxRecipes,
+        maxRecipes: actualMaxRecipes,
       };
       
       console.log("Searching with params:", apiParams);
@@ -35,7 +37,17 @@ export default function useRecipeSearch() {
         recipe.ID = idx;
       });
       
-      searchResult.recipes = validRecipes;
+      if (params.maxRecipes === 1 && validRecipes.length > 0) {
+        const simplestRecipe = validRecipes.reduce((shortest, current) => {
+          const shortestNodeCount = shortest?.nodes?.length || Infinity;
+          const currentNodeCount = current?.nodes?.length || Infinity;
+          return currentNodeCount < shortestNodeCount ? current : shortest;
+        }, validRecipes[0]);
+        
+        searchResult.recipes = [simplestRecipe];
+      } else {
+        searchResult.recipes = validRecipes.slice(0, params.maxRecipes);
+      }
       
       if (searchResult.treeData) {
         validateTreeData(searchResult.treeData);

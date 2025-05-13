@@ -27,8 +27,8 @@ export default function SearchForm({ onSearch, isLoading }: SearchFormProps) {
     onSearch({
       targetElement,
       algorithm,
-      findShortest,
-      maxRecipes: findShortest ? 1 : maxRecipes,
+      findShortest: false,
+      maxRecipes: findShortest ? 2 : maxRecipes,
     });
   };
 
@@ -115,7 +115,7 @@ export default function SearchForm({ onSearch, isLoading }: SearchFormProps) {
             ) : (
               <>
                 <span className="mr-2">
-                  < FaSearch />
+                  <FaSearch />
                 </span>
                 <span>Cari Recipe</span>
               </>
