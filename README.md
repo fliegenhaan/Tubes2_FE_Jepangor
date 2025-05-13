@@ -24,8 +24,7 @@ Bidirectional Search adalah teknik pencarian yang menjalankan dua pencarian seka
 ## Requirement Program dan Instalasi
 
 ### Frontend
-- Node.js
-- npm atau yarn
+- Next.js
 
 ### Backend
 - Go
