@@ -28,7 +28,7 @@ export default function SearchForm({ onSearch, isLoading }: SearchFormProps) {
       targetElement,
       algorithm,
       findShortest: false,
-      maxRecipes: findShortest ? 2 : maxRecipes,
+      maxRecipes: findShortest ? 3 : maxRecipes,
     });
   };
 

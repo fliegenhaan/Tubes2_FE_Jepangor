@@ -12,7 +12,7 @@ export default function useRecipeSearch() {
     setError(null);
     
     try {
-      const actualMaxRecipes = params.maxRecipes === 1 ? 2 : params.maxRecipes;
+      const actualMaxRecipes = params.maxRecipes === 1 ? 3 : params.maxRecipes;
       
       const apiParams = {
         targetElement: params.targetElement,
